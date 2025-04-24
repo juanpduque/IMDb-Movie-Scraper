@@ -1,0 +1,27 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+####### Folders
+/reviews
+/movie_emotions
+/movie_data
+/logs
+/data
+scary_movie_rankings.csv
+balanced_scary_movies_analysis.csv
+review_counts.csv
+scary_movies_analysis.csv
+movie_emotions_ids.csv
+horror_movies_ids.csv
+genres_vs_weighted_scores.png
+weighted_score_distribution.png
+top_10_scary_movies.png
+last_scraped_id.txt
+last_dataset_name.txt
