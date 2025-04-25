@@ -1,22 +1,45 @@
 # IMDb Movie Scraper
 
-A Python project to scrape movie reviews from IMDb based on specific criteria.
+Un scraper para extraer y analizar datos de películas de IMDb.
 
-## Requirements
+## Estructura del Proyecto
 
-- Python 3.x
-- Selenium WebDriver (e.g., ChromeDriver for Google Chrome)
+```
+IMDb-Movie-Scraper/
+├── src/                    # Código fuente principal
+│   ├── scrapers/          # Scripts de scraping
+│   ├── analysis/          # Scripts de análisis
+│   ├── utils/             # Utilidades y funciones auxiliares
+│   └── visualization/     # Scripts de visualización
+├── data/                  # Datos procesados
+│   ├── raw/              # Datos crudos
+│   ├── processed/        # Datos procesados
+│   └── results/          # Resultados finales
+├── logs/                 # Archivos de registro
+├── config/              # Archivos de configuración
+├── tests/               # Tests unitarios
+├── docs/                # Documentación
+├── requirements.txt     # Dependencias
+└── README.md           # Documentación principal
+```
 
-## Setup
+## Instalación
 
-1. Clone this repository.
-2. Install dependencies using `pip install -r requirements.txt`.
-3. Place the IMDb dataset file in the `data` directory.
+1. Clonar el repositorio
+2. Crear un entorno virtual: `python -m venv .venv`
+3. Activar el entorno virtual: `source .venv/bin/activate` (Linux/Mac) o `.venv\Scripts\activate` (Windows)
+4. Instalar dependencias: `pip install -r requirements.txt`
 
-## Usage
+## Uso
 
-Run the script using:
+Los scripts principales se encuentran en el directorio `src/`:
 
-```bash
-python main.py
+- `scrapers/`: Contiene los scripts para extraer datos de IMDb
+- `analysis/`: Contiene los scripts para analizar los datos extraídos
+- `utils/`: Contiene utilidades y funciones auxiliares
+- `visualization/`: Contiene scripts para generar visualizaciones
+
+## Contribución
+
+Las contribuciones son bienvenidas. Por favor, asegúrate de seguir la estructura del proyecto y documentar cualquier cambio significativo.
 

@@ -1,4 +1,6 @@
 import pandas as pd
+from pathlib import Path
+from config.paths import PROCESSED_DATA_DIR, RESULTS_DIR
 
 
 def analyze_scariest_movies_with_review_balance(
@@ -76,10 +78,10 @@ def analyze_scariest_movies_with_review_balance(
 
 
 # Example usage
-score_file = "review_counts.csv"  # imdb_id, Review_Count
-average_score_file = "scary_movie_rankings.csv"  # imdb_id, Average_Score
-metadata_file = "scary_movies_analysis.csv"  # imdb_id, primaryTitle, genres
-output_file = "balanced_scary_movies_analysis.csv"
+score_file = PROCESSED_DATA_DIR / "review_counts.csv"  # imdb_id, Review_Count
+average_score_file = PROCESSED_DATA_DIR / "scary_movie_rankings.csv"  # imdb_id, Average_Score
+metadata_file = PROCESSED_DATA_DIR / "scary_movies_analysis.csv"  # imdb_id, primaryTitle, genres
+output_file = RESULTS_DIR / "balanced_scary_movies_analysis.csv"
 
 # Analyze scariest movies with balanced scoring
 scariest_movies = analyze_scariest_movies_with_review_balance(

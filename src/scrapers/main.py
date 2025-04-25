@@ -3,12 +3,19 @@ import os
 import sys
 import argparse
 import pandas as pd
+from pathlib import Path
+from config.paths import (
+    MOVIE_DATA_DIR,
+    REVIEWS_DIR,
+    PROCESSED_DATA_DIR,
+    LOGS_DIR
+)
 from src import IMDbDataset
 from src import MovieExporter
 from src import MovieScraperPipeline
 from src import WebDriverManager
 from src.progress_manager import ProgressManager
-from src.sentiment_analyzer import SentimentAnalyzer
+from src.analysis.sentiment_analyzer import SentimentAnalyzer
 
 
 def get_filter_parameters(args):
@@ -55,7 +62,7 @@ def get_filter_parameters(args):
     return genre, title_type, start_year, end_year, is_adult
 
 
-def list_filtered_files(directory="movie_data"):
+def list_filtered_files(directory=MOVIE_DATA_DIR):
     """List all CSV files in the specified directory and prompt the user
     to select one."""
     try:
@@ -84,7 +91,7 @@ def list_filtered_files(directory="movie_data"):
         return None
 
 
-def list_review_folders(review_base_folder="reviews"):
+def list_review_folders(review_base_folder=REVIEWS_DIR):
     """List all directories in the specified review folder."""
     try:
         folders = [
