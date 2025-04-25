@@ -12,10 +12,10 @@ from config.paths import (
 )
 from src import IMDbDataset
 from src import MovieExporter
-from src import MovieScraperPipeline
+from src.scrapers.movie_scraper_pipeline import MovieScraperPipeline
 from src import WebDriverManager
-from src.progress_manager import ProgressManager
-from src.analysis.sentiment_analyzer import SentimentAnalyzer
+from src.utils.progress_manager import ProgressManager
+from src.analysis.sentiment.sentiment_analyzer import SentimentAnalyzer
 
 
 def get_filter_parameters(args):

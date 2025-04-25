@@ -24,7 +24,9 @@ class MovieExporter:
         # Construct the filename based on filter parameters
         filename_parts = ["movies"]
         if genre:
-            filename_parts.append(f"genre_{genre}")
+            # Replace special characters in genre
+            safe_genre = genre.replace("/", "_").replace("\\", "_")
+            filename_parts.append(f"genre_{safe_genre}")
         if start_year:
             filename_parts.append(f"start_{start_year}")
         if end_year:

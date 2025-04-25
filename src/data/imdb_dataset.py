@@ -13,14 +13,19 @@ class IMDbDataset:
         """
         Load IMDb dataset from a TSV file and rename columns for better
         readability.
+
+        Returns:
+            pd.DataFrame: The loaded dataset or None if loading fails.
         """
         try:
             logging.info(f"Loading data from {self.input_file}...")
             self.data = pd.read_csv(self.input_file, sep='\t')
             logging.info("Data loaded successfully.")
+            return self.data
         except Exception as e:
             logging.error(f"An error occurred while loading data: {e}")
             self.data = None
+            return None
 
     def filter_data(self, column_name, filter_value):
         """

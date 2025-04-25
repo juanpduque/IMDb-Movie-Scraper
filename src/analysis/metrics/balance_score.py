@@ -57,7 +57,7 @@ def analyze_scariest_movies_with_review_balance(
 
         # Calculate Weighted Score
         merged_df["Weighted_Score"] = (
-            merged_df["Average_Score_x"] * merged_df["Review_Count"] / (
+            merged_df["Average_Score"] * merged_df["Review_Count"] / (
                 merged_df["Review_Count"] + k_factor
             )
         )
@@ -74,20 +74,21 @@ def analyze_scariest_movies_with_review_balance(
 
     except Exception as e:
         print(f"Error during analysis: {e}")
-    return pd.DataFrame()  # Return an empty DataFrame on error
+        return pd.DataFrame()  # Return an empty DataFrame on error
 
 
 # Example usage
-score_file = PROCESSED_DATA_DIR / "review_counts.csv"  # imdb_id, Review_Count
-average_score_file = PROCESSED_DATA_DIR / "scary_movie_rankings.csv"  # imdb_id, Average_Score
-metadata_file = PROCESSED_DATA_DIR / "scary_movies_analysis.csv"  # imdb_id, primaryTitle, genres
-output_file = RESULTS_DIR / "balanced_scary_movies_analysis.csv"
+if __name__ == "__main__":
+    score_file = PROCESSED_DATA_DIR / "review_counts.csv"
+    average_score_file = PROCESSED_DATA_DIR / "scary_movie_rankings.csv"
+    metadata_file = PROCESSED_DATA_DIR / "scary_movies_analysis.csv"
+    output_file = RESULTS_DIR / "balanced_scary_movies_analysis.csv"
 
-# Analyze scariest movies with balanced scoring
-scariest_movies = analyze_scariest_movies_with_review_balance(
-    score_file, average_score_file, metadata_file, output_file
-)
+    # Analyze scariest movies with balanced scoring
+    scariest_movies = analyze_scariest_movies_with_review_balance(
+        score_file, average_score_file, metadata_file, output_file
+    )
 
-# Display the top scariest movies
-print("Top Scariest Movies with Balanced Scores:")
-print(scariest_movies)
+    # Display the top scariest movies
+    print("Top Scariest Movies with Balanced Scores:")
+    print(scariest_movies)

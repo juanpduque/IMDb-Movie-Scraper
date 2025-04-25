@@ -42,8 +42,15 @@ class SentimentAnalyzer:
             file_path (str): Path to the file containing reviews.
             output_folder (str): Path to the folder where results will be
                                   saved.
+                                  
+        Raises:
+            FileNotFoundError: If the input file doesn't exist.
+            Exception: For other errors during processing.
         """
         try:
+            if not os.path.exists(file_path):
+                raise FileNotFoundError(f"File not found: {file_path}")
+
             df = pd.read_csv(file_path)
             imdb_id = os.path.basename(file_path).split("_")[1].split(".")[0]
             logging.info(f"Processing file: {file_path} (IMDb ID: {imdb_id})")
@@ -64,6 +71,7 @@ class SentimentAnalyzer:
                     logging.warning(
                         f"Error analyzing review: {review[:50]}... Error: {e}"
                     )
+                    raise
 
             # Save results
             output_file = f"emotions_{imdb_id}.csv"
@@ -71,8 +79,13 @@ class SentimentAnalyzer:
             os.makedirs(output_folder, exist_ok=True)
             pd.DataFrame(results).to_csv(output_path, index=False)
             logging.info(f"Sentiment analysis results saved to {output_path}")
+            return output_path
+        except FileNotFoundError as e:
+            logging.error(f"Error processing file {file_path}: {e}")
+            raise
         except Exception as e:
             logging.error(f"Error processing file {file_path}: {e}")
+            raise
 
     def aggregate_results(self, input_folder):
         """
@@ -84,6 +97,7 @@ class SentimentAnalyzer:
 
         Returns:
             pd.DataFrame: Combined DataFrame of all movies.
+                         Returns empty DataFrame if no files found.
         """
         aggregated_data = []
         for file_name in os.listdir(input_folder):
@@ -94,6 +108,10 @@ class SentimentAnalyzer:
                 imdb_id = file_name.split("_")[1].split(".")[0]
                 movie_data["imbd_id"] = imdb_id
                 aggregated_data.append(movie_data)
+
+        if not aggregated_data:
+            logging.warning(f"No CSV files found in {input_folder}")
+            return pd.DataFrame()
 
         combined_df = pd.concat(aggregated_data, ignore_index=True)
         logging.info(f"Aggregated data contains {len(combined_df)} reviews.")

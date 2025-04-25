@@ -13,7 +13,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, WebDriverException
-from src.progress_manager import ProgressManager
+from pathlib import Path
+from config.paths import (
+    MOVIE_DATA_DIR,
+    REVIEWS_DIR,
+    PROCESSED_DATA_DIR,
+    LOGS_DIR
+)
+from src.data.imdb_dataset import IMDbDataset
+from src.data.movie_exporter import MovieExporter
+from src.utils.progress_manager import ProgressManager
+from src.scrapers.utils.web_driver_manager import WebDriverManager
 
 
 class MovieScraperPipeline:

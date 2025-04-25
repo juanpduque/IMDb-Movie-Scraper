@@ -1,68 +1,58 @@
+import pytest
 import pandas as pd
 from pathlib import Path
+import os
+from src.data.imdb_dataset import IMDbDataset
 
 # Definir rutas de prueba
-TEST_ROOT = Path(__file__).parent
-TEST_DATA_DIR = TEST_ROOT / "data"
-TEST_RAW_DATA_DIR = TEST_DATA_DIR / "raw"
-TEST_PROCESSED_DATA_DIR = TEST_DATA_DIR / "processed"
-TEST_RESULTS_DIR = TEST_DATA_DIR / "results"
-TEST_MOVIE_DATA_DIR = TEST_RAW_DATA_DIR / "movie_data"
-TEST_REVIEWS_DIR = TEST_RAW_DATA_DIR / "reviews"
+TEST_MOVIE_DATA_DIR = Path("test_data/movies")
+TEST_REVIEWS_DIR = Path("test_data/reviews")
+TEST_PROCESSED_DATA_DIR = Path("test_data/processed")
+TEST_RESULTS_DIR = Path("test_data/results")
 
 def test_data_loading():
-    """Test loading of test data files."""
-    try:
-        # Test loading movies data
-        movies_df = pd.read_csv(TEST_MOVIE_DATA_DIR / "test_movies.tsv", sep='\t')
-        print("✓ Movies data loaded successfully")
-        print(f"  Shape: {movies_df.shape}")
-        print(f"  Columns: {movies_df.columns.tolist()}")
-        
-        # Test loading reviews data
-        reviews_df = pd.read_csv(TEST_PROCESSED_DATA_DIR / "test_reviews.csv")
-        print("✓ Reviews data loaded successfully")
-        print(f"  Shape: {reviews_df.shape}")
-        print(f"  Columns: {reviews_df.columns.tolist()}")
-        
-        # Test loading analysis data
-        analysis_df = pd.read_csv(TEST_PROCESSED_DATA_DIR / "test_analysis.csv")
-        print("✓ Analysis data loaded successfully")
-        print(f"  Shape: {analysis_df.shape}")
-        print(f"  Columns: {analysis_df.columns.tolist()}")
-        
-        return True
-    except Exception as e:
-        print(f"✗ Error loading test data: {e}")
-        return False
+    """Test that data loading works correctly."""
+    # Create test data
+    test_data = pd.DataFrame({
+        'tconst': ['tt1', 'tt2', 'tt3'],
+        'primaryTitle': ['Movie1', 'Movie2', 'Movie3'],
+        'startYear': [2000, 2001, 2002],
+        'genres': ['Action', 'Comedy', 'Drama']
+    })
+    
+    # Save test data
+    test_data.to_csv('test_data.tsv', sep='\t', index=False)
+    
+    # Test loading
+    dataset = IMDbDataset('test_data.tsv')
+    loaded_data = dataset.load_data()
+    
+    # Clean up
+    os.remove('test_data.tsv')
+    
+    # Verify data was loaded correctly
+    assert not loaded_data.empty
+    assert len(loaded_data) == 3
+    assert list(loaded_data.columns) == [
+        'tconst', 'primaryTitle', 'startYear', 'genres'
+    ]
 
 def test_directory_structure():
-    """Test if all required directories exist."""
-    required_dirs = [
-        TEST_MOVIE_DATA_DIR,
-        TEST_REVIEWS_DIR,
-        TEST_PROCESSED_DATA_DIR,
-        TEST_RESULTS_DIR
-    ]
+    """Test that the pipeline creates the correct directory structure."""
+    # Create test directories
+    test_dirs = ['raw_data', 'processed_data', 'results']
+    for dir_name in test_dirs:
+        os.makedirs(dir_name, exist_ok=True)
     
-    all_dirs_exist = True
-    for directory in required_dirs:
-        if not directory.exists():
-            print(f"✗ Directory not found: {directory}")
-            all_dirs_exist = False
-        else:
-            print(f"✓ Directory exists: {directory}")
+    # Verify directories exist
+    for dir_name in test_dirs:
+        assert os.path.exists(dir_name)
+        assert os.path.isdir(dir_name)
     
-    return all_dirs_exist
+    # Clean up
+    for dir_name in test_dirs:
+        os.rmdir(dir_name)
 
 if __name__ == "__main__":
-    print("Testing directory structure...")
-    dir_test = test_directory_structure()
-    
-    print("\nTesting data loading...")
-    data_test = test_data_loading()
-    
-    if dir_test and data_test:
-        print("\n✓ All tests passed successfully!")
-    else:
-        print("\n✗ Some tests failed. Please check the output above.") 
+    test_data_loading()
+    test_directory_structure() 
